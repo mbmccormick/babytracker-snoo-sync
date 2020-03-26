@@ -1,7 +1,7 @@
 const request = require("request");
 const moment = require("moment");
 
-exports.login = async function(username, password) {
+exports.login = async function (username, password) {
     console.log("Logging in to SNOO service.");
 
     return new Promise(((resolve, reject) => {
@@ -13,31 +13,31 @@ exports.login = async function(username, password) {
                 "password": password
             }
         },
-        function (err, response, body) {
-            if (err || response.statusCode >= 400) {
-                console.error("Status Code = " + response.statusCode);
+            function (err, response, body) {
+                if (err || response.statusCode >= 400) {
+                    console.error("Status Code = " + response.statusCode);
 
-                if (err) {
-                    console.error(err);
+                    if (err) {
+                        console.error(err);
+                    }
+
+                    if (body) {
+                        console.error(body);
+                    }
+
+                    reject(err);
                 }
 
-                if (body) {
-                    console.error(body);
-                }
-                
-                reject(err);
-            }
+                var data = body;
 
-            var data = body;
+                console.log("Login succeeded.");
 
-            console.log("Login succeeded.");
-
-            resolve(data.access_token);
-        });
+                resolve(data.access_token);
+            });
     }));
 }
 
-exports.getSleepData = async function(token, date) {
+exports.getSleepData = async function (token, date) {
     console.log("Fetching sleep data for " + moment(date).format("MM/DD/YYYY") + " from SNOO service.");
 
     return new Promise(((resolve, reject) => {
@@ -48,26 +48,26 @@ exports.getSleepData = async function(token, date) {
                 bearer: token
             }
         },
-        function (err, response, body) {
-            if (err || response.statusCode >= 400) {
-                console.error("Status Code = " + response.statusCode);
+            function (err, response, body) {
+                if (err || response.statusCode >= 400) {
+                    console.error("Status Code = " + response.statusCode);
 
-                if (err) {
-                    console.error(err);
+                    if (err) {
+                        console.error(err);
+                    }
+
+                    if (body) {
+                        console.error(body);
+                    }
+
+                    reject(err);
                 }
 
-                if (body) {
-                    console.error(body);
-                }
-                
-                reject(err);
-            }
-        
-            var data = JSON.parse(body);
+                var data = JSON.parse(body);
 
-            console.log("Fetch sleep data succeeded.");
+                console.log("Fetch sleep data succeeded.");
 
-            resolve(data);
-        });
+                resolve(data);
+            });
     }));
 }

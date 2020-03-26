@@ -46,7 +46,7 @@ async function getSleeps(token, duration) {
 
     var endDate = moment();
     var startDate = moment(endDate - duration);
-    
+
     var sessions = [];
     for (var i = 0; i <= days; i++) {
         sessions = sessions.concat((await snoo.getSleepData(token, moment(startDate).add(i, "days"))).levels);
@@ -74,7 +74,7 @@ exports.handler = async function (event, context, callback) {
     var token = await snoo.login(process.env.SNOO_EMAIL_ADDRESS, process.env.SNOO_PASSWORD);
 
     var duration = moment.duration(24, "hours");
-    
+
     var sleeps = await getSleeps(token, duration);
 
     await babyTracker.login(process.env.BABYTRACKER_EMAIL_ADDRESS, process.env.BABYTRACKER_PASSWORD, process.env.BABYTRACKER_DEVICE_UUID);

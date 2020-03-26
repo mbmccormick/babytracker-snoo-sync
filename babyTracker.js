@@ -9,7 +9,7 @@ var DeviceUUID = "00000000-0000-0000-0000-000000000000";
 
 moment.tz.setDefault("America/Los_Angeles");
 
-exports.login = async function(username, password, deviceUuid) {
+exports.login = async function (username, password, deviceUuid) {
     console.log("Logging in to Baby Tracker service.");
 
     DeviceUUID = deviceUuid;
@@ -33,25 +33,25 @@ exports.login = async function(username, password, deviceUuid) {
             },
             jar: true
         },
-        function (err, response, body) {
-            if (err || response.statusCode >= 400) {
-                console.error("Status Code = " + response.statusCode);
+            function (err, response, body) {
+                if (err || response.statusCode >= 400) {
+                    console.error("Status Code = " + response.statusCode);
 
-                if (err) {
-                    console.error(err);
+                    if (err) {
+                        console.error(err);
+                    }
+
+                    if (body) {
+                        console.error(body);
+                    }
+
+                    reject(err);
                 }
 
-                if (body) {
-                    console.error(body);
-                }
-                
-                reject(err);
-            }
+                console.log("Login succeeded.");
 
-            console.log("Login succeeded.");
-
-            resolve();
-        });
+                resolve();
+            });
     });
 };
 
@@ -64,27 +64,27 @@ async function getDevices() {
             url: "https://prodapp.babytrackers.com/account/device",
             jar: true
         },
-        function (err, response, body) {
-            if (err || response.statusCode >= 400) {
-                console.error("Status Code = " + response.statusCode);
+            function (err, response, body) {
+                if (err || response.statusCode >= 400) {
+                    console.error("Status Code = " + response.statusCode);
 
-                if (err) {
-                    console.error(err);
+                    if (err) {
+                        console.error(err);
+                    }
+
+                    if (body) {
+                        console.error(body);
+                    }
+
+                    reject(err);
                 }
 
-                if (body) {
-                    console.error(body);
-                }
-                
-                reject(err);
-            }
+                var data = JSON.parse(body);
 
-            var data = JSON.parse(body);
+                console.log("Fetch devices succeeded.");
 
-            console.log("Fetch devices succeeded.");
-
-            resolve(data);
-        });
+                resolve(data);
+            });
     });
 }
 
@@ -97,30 +97,30 @@ async function getLatestTransactionForDevice(device) {
             url: "https://prodapp.babytrackers.com/account/transaction/" + device.DeviceUUID + "/" + (device.LastSyncID - 1),
             jar: true
         },
-        function (err, response, body) {
-            if (err || response.statusCode >= 400) {
-                console.error("Status Code = " + response.statusCode);
+            function (err, response, body) {
+                if (err || response.statusCode >= 400) {
+                    console.error("Status Code = " + response.statusCode);
 
-                if (err) {
-                    console.error(err);
+                    if (err) {
+                        console.error(err);
+                    }
+
+                    if (body) {
+                        console.error(body);
+                    }
+
+                    reject(err);
                 }
 
-                if (body) {
-                    console.error(body);
-                }
-                
-                reject(err);
-            }
+                var data = JSON.parse(body);
 
-            var data = JSON.parse(body);
+                var transaction = Buffer.from(data[0].Transaction, "base64").toString("ascii");
+                transaction = JSON.parse(transaction);
 
-            var transaction = Buffer.from(data[0].Transaction, "base64").toString("ascii");
-            transaction = JSON.parse(transaction);
+                console.log("Fetch latest transaction succeeded.");
 
-            console.log("Fetch latest transaction succeeded.");
-
-            resolve(transaction);
-        });
+                resolve(transaction);
+            });
     });
 }
 
@@ -186,7 +186,7 @@ exports.getTransactions = async function (maximum) {
 
     var start = lastSyncId - maximum;
 
-    if (start < 0) { 
+    if (start < 0) {
         start = 0;
     }
 
@@ -196,36 +196,36 @@ exports.getTransactions = async function (maximum) {
             url: "https://prodapp.babytrackers.com/account/transaction/" + DeviceUUID + "/" + start,
             jar: true
         },
-        function (err, response, body) {
-            if (err || response.statusCode >= 400) {
-                console.error("Status Code = " + response.statusCode);
+            function (err, response, body) {
+                if (err || response.statusCode >= 400) {
+                    console.error("Status Code = " + response.statusCode);
 
-                if (err) {
-                    console.error(err);
+                    if (err) {
+                        console.error(err);
+                    }
+
+                    if (body) {
+                        console.error(body);
+                    }
+
+                    reject(err);
                 }
 
-                if (body) {
-                    console.error(body);
+                var data = JSON.parse(body);
+
+                var transactions = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    var transaction = Buffer.from(data[0].Transaction, "base64").toString("ascii");
+                    transaction = JSON.parse(transaction);
+
+                    transactions.push(transaction);
                 }
-                
-                reject(err);
-            }
 
-            var data = JSON.parse(body);
+                console.log("Fetch transactions succeeded.");
 
-            var transactions = [];
-
-            for (var i = 0; i < data.length; i++) {
-                var transaction = Buffer.from(data[0].Transaction, "base64").toString("ascii");
-                transaction = JSON.parse(transaction);
-
-                transactions.push(transaction);
-            }
-
-            console.log("Fetch transactions succeeded.");
-
-            resolve(transactions);
-        });
+                resolve(transactions);
+            });
     });
 };
 
@@ -264,43 +264,43 @@ async function createDiaper(type, note) {
             },
             jar: true
         },
-        function (err, response, body) {
-            if (err || response.statusCode >= 400) {
-                console.error("Status Code = " + response.statusCode);
+            function (err, response, body) {
+                if (err || response.statusCode >= 400) {
+                    console.error("Status Code = " + response.statusCode);
 
-                if (err) {
-                    console.error(err);
+                    if (err) {
+                        console.error(err);
+                    }
+
+                    if (body) {
+                        console.error(body);
+                    }
+
+                    reject(err);
                 }
 
-                if (body) {
-                    console.error(body);
-                }
-                
-                reject(err);
-            }
+                console.log("Post diaper record succeeded.");
 
-            console.log("Post diaper record succeeded.");
-
-            resolve();
-        });
+                resolve();
+            });
     });
 }
 
-exports.createWetDiaper = async function(note) {
+exports.createWetDiaper = async function (note) {
     await createDiaper("0", note);
 };
 
-exports.createDirtyDiaper = async function(note) {
+exports.createDirtyDiaper = async function (note) {
     await createDiaper("1", note);
 };
 
-exports.createMixedDiaper = async function(note) {
+exports.createMixedDiaper = async function (note) {
     await createDiaper("2", note);
 };
 
-exports.createSleep = async function(startTime, minutes, note) {
+exports.createSleep = async function (startTime, minutes, note) {
     console.log("Posting sleep record to Baby Tracker service.");
-    
+
     var babyObject = await getLatestBabyObject();
     var timestamp = moment().format("YYYY-MM-DD HH:mm:ss ZZ")
 
@@ -332,24 +332,24 @@ exports.createSleep = async function(startTime, minutes, note) {
             },
             jar: true
         },
-        function (err, response, body) {
-            if (err || response.statusCode >= 400) {
-                console.error("Status Code = " + response.statusCode);
+            function (err, response, body) {
+                if (err || response.statusCode >= 400) {
+                    console.error("Status Code = " + response.statusCode);
 
-                if (err) {
-                    console.error(err);
+                    if (err) {
+                        console.error(err);
+                    }
+
+                    if (body) {
+                        console.error(body);
+                    }
+
+                    reject(err);
                 }
 
-                if (body) {
-                    console.error(body);
-                }
-                
-                reject(err);
-            }
+                console.log("Post sleep record succeeded.");
 
-            console.log("Post sleep record succeeded.");
-
-            resolve();
-        });
+                resolve();
+            });
     });
 };
