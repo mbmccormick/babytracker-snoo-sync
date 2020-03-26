@@ -42,7 +42,7 @@ function combineSleepSessions(data) {
 }
 
 async function getSleeps(token, duration) {
-    var days = duration.days();
+    var days = duration.asDays();
 
     var endDate = moment();
     var startDate = moment(endDate - duration);
