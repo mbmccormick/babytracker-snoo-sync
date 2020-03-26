@@ -1,0 +1,16 @@
+{
+  "name": "babytracker-snoo-sync",
+  "version": "1.0.0",
+  "description": "Sync sleep data to Baby Tracker from SNOO service.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matt McCormick",
+  "dependencies": {
+    "request": "^2.88.2",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.28",
+    "uuid": "^7.0.2"
+  }
+}
