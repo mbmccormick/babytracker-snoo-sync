@@ -21,7 +21,7 @@ Create the following environment variables on your AWS Lambda Function:
 
 `BABYTRACKER_DEVICE_UUID` - Generate a random UUID and paste it here. You can use a site like https://www.guidgen.com to generate this.
 
-Create a CloudWatch Event that runs every 24 hours by following the instructions here: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/RunLambdaSchedule.html
+Create a [CloudWatch Event](https://aws.amazon.com/cloudwatch/) that runs every 24 hours by following the instructions here: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/RunLambdaSchedule.html
 
 The following cron expression will trigger a CloudWatch Event everyday at 17:00 UTC:
 
