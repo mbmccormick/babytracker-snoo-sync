@@ -1,7 +1,7 @@
 {
   "name": "babytracker-snoo-sync",
   "version": "1.0.0",
-  "description": "Sync sleep data to Baby Tracker from SNOO service.",
+  "description": "Sync sleep data to Baby Tracker from the SNOO service.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
