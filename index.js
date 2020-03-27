@@ -69,7 +69,8 @@ async function getSleeps(token, duration) {
 }
 
 exports.handler = async function (event, context, callback) {
-    console.log("Beginning synchronization.");
+    console.log("Received event:");
+    console.log(event);
 
     var token = await snoo.login(process.env.SNOO_EMAIL_ADDRESS, process.env.SNOO_PASSWORD);
 
