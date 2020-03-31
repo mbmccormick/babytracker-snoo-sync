@@ -43,7 +43,7 @@ This function does not attempt to de-duplicate sleep sessions in Baby Tracker. T
 
 For this reason, it is important that you configure your CloudWatch Event to run hourly.
 
-If sleep sessions are not syncing to the Baby Tracker app for some reason or you see the error `Account has been reset. Please login again.` in your logs, generate a new UUID for the `DEVICE_UUID`. Disconnect your mobile device(s) from the group in the Baby Tracker app. Then reconnect one device to the group, selecting the Reset Group option when reconnecting. This should clear out any sync issues and recreate the group.
+If sleep sessions are not syncing to the Baby Tracker app for some reason or you see the error `Account has been reset. Please login again.` in your logs, generate a new UUID for the `BABYTRACKER_DEVICE_UUID`. Disconnect your mobile device(s) from the group in the Baby Tracker app. Then reconnect one device to the group, selecting the Reset Group option when reconnecting. This should clear out any sync issues and recreate the group.
 
 
 ## License
