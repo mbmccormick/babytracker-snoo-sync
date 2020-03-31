@@ -21,27 +21,27 @@ Create the following environment variables on your AWS Lambda Function:
 
 `BABYTRACKER_DEVICE_UUID` - Generate a random UUID and paste it here. You can use a site like https://www.guidgen.com to generate this.
 
-Create a [CloudWatch Event](https://aws.amazon.com/cloudwatch/) that runs every 24 hours by following the instructions here: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/RunLambdaSchedule.html
+Create a [CloudWatch Event](https://aws.amazon.com/cloudwatch/) that runs every hour by following the instructions here: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/RunLambdaSchedule.html
 
-The following cron expression will trigger a CloudWatch Event everyday at 17:00 UTC:
+Use the following cron expression to trigger your CloudWatch Event every hour:
 
-`0 17 * * ? *`
+`0 * * * ? *`
 
-Configure your CloudWatch Event to trigger your AWS Lambda function.
+Configure your CloudWatch Event to trigger the AWS Lambda function that you created above.
 
 
 ## Usage
 
-This Lambda function syncs the last 24 hours of sleep sessions from SNOO into Baby Tracker.
+This Lambda function syncs the last hour of sleep sessions from SNOO into Baby Tracker.
 
-When deployed as described above, this function will run every 24 hours and sync sleep sessions from SNOO into Baby Tracker on a daily basis.
+When deployed as described above, this function will run every hour and sync sleep sessions from SNOO into Baby Tracker at the top of each hour.
 
 
 ## Known Issues
 
-This function does not attempt to de-duplicate sleep sessions in Baby Tracker. Therefore, if you invoke this function multiple times, then there will be duplicate sleep sessions created in Baby Tracker.
+This function does not attempt to de-duplicate sleep sessions in Baby Tracker. Therefore, if you invoke this function multiple times in an hour, then there will be duplicate sleep sessions created in Baby Tracker.
 
-For this reason, it is important that you configure your CloudWatch Event to run at a 24 hour interval.
+For this reason, it is important that you configure your CloudWatch Event to run hourly.
 
 
 ## License

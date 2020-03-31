@@ -57,11 +57,18 @@ async function getSleeps(token, duration) {
     var sleeps = [];
 
     for (var i = 0; i < data.length; i++) {
-        var sleepEndTime = moment(data[i].startTime).add(data[i].duration, "seconds");
+        var sleep = data[i];
+
+        var sleepEndTime = moment(sleep.startTime).add(sleep.duration, "seconds");
+
+        // ignore active sleep sessions, these will by synced later
+        if (sleep.duration == 0) {
+            continue;
+        }
 
         if (sleepEndTime.isSameOrAfter(startDate) &&
             sleepEndTime.isSameOrBefore(endDate)) {
-            sleeps.push(data[i]);
+            sleeps.push(sleep);
         }
     }
 
@@ -74,7 +81,7 @@ exports.handler = async function (event, context, callback) {
 
     var token = await snoo.login(process.env.SNOO_EMAIL_ADDRESS, process.env.SNOO_PASSWORD);
 
-    var duration = moment.duration(24, "hours");
+    var duration = moment.duration(1, "hours");
 
     var sleeps = await getSleeps(token, duration);
 
