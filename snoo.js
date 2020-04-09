@@ -26,6 +26,7 @@ exports.login = async function (username, password) {
                     }
 
                     reject(err);
+                    return;
                 }
 
                 var data = body;
@@ -61,6 +62,7 @@ exports.getSleepData = async function (token, date) {
                     }
 
                     reject(err);
+                    return;
                 }
 
                 var data = JSON.parse(body);

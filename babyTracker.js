@@ -46,6 +46,7 @@ exports.login = async function (username, password, deviceUuid) {
                     }
 
                     reject(err);
+                    return;
                 }
 
                 console.log("Login succeeded.");
@@ -77,6 +78,7 @@ async function getDevices() {
                     }
 
                     reject(err);
+                    return;
                 }
 
                 var data = JSON.parse(body);
@@ -110,6 +112,7 @@ async function getLatestTransactionForDevice(device) {
                     }
 
                     reject(err);
+                    return;
                 }
 
                 var data = JSON.parse(body);
@@ -209,6 +212,7 @@ exports.getTransactions = async function (maximum) {
                     }
 
                     reject(err);
+                    return;
                 }
 
                 var data = JSON.parse(body);
@@ -277,6 +281,7 @@ async function createDiaper(type, note) {
                     }
 
                     reject(err);
+                    return;
                 }
 
                 console.log("Post diaper record succeeded.");
@@ -345,6 +350,7 @@ exports.createSleep = async function (startTime, minutes, note) {
                     }
 
                     reject(err);
+                    return;
                 }
 
                 console.log("Post sleep record succeeded.");
