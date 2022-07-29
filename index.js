@@ -3,7 +3,7 @@ const babyTracker = require("./babyTracker.js");
 
 const moment = require("moment-timezone");
 
-moment.tz.setDefault("America/Los_Angeles");
+moment.tz.setDefault(process.env.TIME_ZONE);
 
 function combineSleepSessions(data) {
     var sleeps = [];

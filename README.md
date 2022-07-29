@@ -11,6 +11,8 @@ Configure your AWS Lambda Function to use the Node.js 12.x runtime and allow for
 
 Create the following environment variables on your AWS Lambda Function:
 
+`TIME_ZONE` - The time zone in which you are located, like `America/Chicago`. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the complete list of supported options.
+
 `SNOO_EMAIL_ADDRESS` - The email address for your SNOO account.
 
 `SNOO_PASSWORD` - The password for your SNOO account.
