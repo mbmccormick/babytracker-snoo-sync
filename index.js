@@ -80,6 +80,8 @@ exports.handler = async function (event, context, callback) {
 
     var sleeps = await getSleeps(token, syncInterval);
 
+    console.log("Found " + sleeps.length + " sleeps since last synchronization.");
+
     if (sleeps.length > 0) {
         await babyTracker.login(process.env.BABYTRACKER_EMAIL_ADDRESS, process.env.BABYTRACKER_PASSWORD, process.env.BABYTRACKER_DEVICE_UUID);
 
