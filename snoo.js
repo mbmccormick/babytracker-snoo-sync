@@ -38,13 +38,13 @@ exports.login = async function (username, password) {
     }));
 }
 
-exports.getSleepData = async function (token, date) {
-    console.log("Fetching sleep data for " + moment(date).format("MM/DD/YYYY") + " from SNOO service.");
+exports.getSleepData = async function (token, dateTime) {
+    console.log("Fetching sleep data since " + moment(dateTime).format("MM/DD/YYYY HH:mm:ss") + " from SNOO service.");
 
     return new Promise(((resolve, reject) => {
         request({
             method: "GET",
-            url: "https://snoo-api.happiestbaby.com/ss/v2/sessions/aggregated?startTime=" + moment(date).format("MM/DD/YYYY"),
+            url: "https://snoo-api.happiestbaby.com/ss/v2/sessions/aggregated?startTime=" + moment(dateTime).format("MM/DD/YYYY HH:mm:ss"),
             auth: {
                 bearer: token
             }

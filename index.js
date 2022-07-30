@@ -41,17 +41,13 @@ function combineSleepSessions(data) {
     return sleeps;
 }
 
-async function getSleeps(token, duration) {
-    var days = duration.asDays();
+async function getSleeps(token, syncInterval) {
+    var syncTime = moment();
 
-    var endDate = moment();
-    var startDate = moment(endDate - duration);
+    // get all sleep sessions for the last 24 hours
+    var sessions = (await snoo.getSleepData(token, moment(syncTime).subtract(24, "hours"))).levels;
 
-    var sessions = [];
-    for (var i = 0; i <= days; i++) {
-        sessions = sessions.concat((await snoo.getSleepData(token, moment(startDate).add(i, "days"))).levels);
-    }
-
+    // combine all sleep session levels into individual sleep sessions
     var data = combineSleepSessions(sessions);
 
     var sleeps = [];
@@ -59,15 +55,14 @@ async function getSleeps(token, duration) {
     for (var i = 0; i < data.length; i++) {
         var sleep = data[i];
 
-        var sleepEndTime = moment(sleep.startTime).add(sleep.duration, "seconds");
-
-        // ignore active sleep sessions, these will by synced later
+        // ignore active sleep sessions, these will be synced later
         if (sleep.duration == 0) {
             continue;
         }
+        
+        var sleepEndTime = moment(sleep.startTime).add(sleep.duration, "seconds");
 
-        if (sleepEndTime.isSameOrAfter(startDate) &&
-            sleepEndTime.isSameOrBefore(endDate)) {
+        if (sleepEndTime >= (syncTime - syncInterval)) {
             sleeps.push(sleep);
         }
     }
@@ -81,9 +76,9 @@ exports.handler = async function (event, context, callback) {
 
     var token = await snoo.login(process.env.SNOO_EMAIL_ADDRESS, process.env.SNOO_PASSWORD);
 
-    var duration = moment.duration(1, "hours");
+    var syncInterval = moment.duration(1, "hours");
 
-    var sleeps = await getSleeps(token, duration);
+    var sleeps = await getSleeps(token, syncInterval);
 
     await babyTracker.login(process.env.BABYTRACKER_EMAIL_ADDRESS, process.env.BABYTRACKER_PASSWORD, process.env.BABYTRACKER_DEVICE_UUID);
 
