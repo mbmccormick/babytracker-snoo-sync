@@ -54,4 +54,4 @@ This software, and its dependencies, are distributed free of charge and licensed
 
 &nbsp;
 
-Made with ❤️ for Elliana.
+Made with ❤️ for Elliana and Grady.
