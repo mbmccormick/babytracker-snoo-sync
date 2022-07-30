@@ -80,12 +80,14 @@ exports.handler = async function (event, context, callback) {
 
     var sleeps = await getSleeps(token, syncInterval);
 
-    await babyTracker.login(process.env.BABYTRACKER_EMAIL_ADDRESS, process.env.BABYTRACKER_PASSWORD, process.env.BABYTRACKER_DEVICE_UUID);
+    if (sleeps.length > 0) {
+        await babyTracker.login(process.env.BABYTRACKER_EMAIL_ADDRESS, process.env.BABYTRACKER_PASSWORD, process.env.BABYTRACKER_DEVICE_UUID);
 
-    for (var i = 0; i < sleeps.length; i++) {
-        var sleep = sleeps[i];
+        for (var i = 0; i < sleeps.length; i++) {
+            var sleep = sleeps[i];
 
-        await babyTracker.createSleep(sleep.startTime, (sleep.duration / 60), "Logged from SNOO.");
+            await babyTracker.createSleep(sleep.startTime, (sleep.duration / 60), "Logged from SNOO.");
+        }
     }
 
     console.log("Completed.");
