@@ -44,8 +44,8 @@ function combineSleepSessions(data) {
 async function getSleeps(token, syncInterval) {
     var syncTime = moment();
 
-    // get all sleep sessions for the last 24 hours
-    var sessions = (await snoo.getSleepData(token, moment(syncTime).subtract(24, "hours"))).levels;
+    // get all sleep sessions for the last 12 hours
+    var sessions = (await snoo.getSleepData(token, moment(syncTime).subtract(12, "hours"))).levels;
 
     // combine all sleep session levels into individual sleep sessions
     var data = combineSleepSessions(sessions);
