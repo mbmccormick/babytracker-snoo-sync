@@ -1,5 +1,7 @@
 const request = require("request");
-const moment = require("moment");
+const moment = require("moment-timezone");
+
+moment.tz.setDefault(process.env.TIME_ZONE);
 
 exports.login = async function (username, password) {
     console.log("Logging in to SNOO service.");

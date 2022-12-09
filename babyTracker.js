@@ -7,7 +7,7 @@ const DeviceOSInfo = "Node.js 1.0.0";
 
 var DeviceUUID = "00000000-0000-0000-0000-000000000000";
 
-moment.tz.setDefault("America/Los_Angeles");
+moment.tz.setDefault(process.env.TIME_ZONE);
 
 exports.login = async function (username, password, deviceUuid) {
     console.log("Logging in to Baby Tracker service.");

@@ -23,7 +23,11 @@ function combineSleepSessions(data) {
         }
 
         if (exists) {
-            sleeps[j].duration += session.stateDuration;
+            if (session.isActive) {
+                sleeps[j].duration = 0;
+            } else {
+                sleeps[j].duration += session.stateDuration;
+            }
 
             if (session.startTime < sleeps[j].startTime) {
                 sleeps[j].startTime = session.startTime;
