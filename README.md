@@ -7,7 +7,7 @@ This is an [AWS Lambda](https://aws.amazon.com/lambda/) function written in Node
 
 Upload the code for the AWS Lambda Function by following the instructions here: https://docs.aws.amazon.com/lambda/latest/dg/programming-model.html
 
-Configure your AWS Lambda Function to use the Node.js 12.x runtime and allow for one minute timeout.
+Configure your AWS Lambda Function to use the Node.js 16.x runtime and allow for one minute timeout.
 
 Create the following environment variables on your AWS Lambda Function:
 
