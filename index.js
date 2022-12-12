@@ -64,8 +64,10 @@ async function getSleeps(token, syncInterval) {
             continue;
         }
         
+        // compute the sleep session end time, based on start time and duration
         var sleepEndTime = moment(sleep.startTime).add(sleep.duration, "seconds");
 
+        // if the sleep session ended during this last last sync interval, add it to the result
         if (sleepEndTime >= (syncTime - syncInterval)) {
             sleeps.push(sleep);
         }
@@ -78,20 +80,24 @@ exports.handler = async function (event, context, callback) {
     console.log("Received event:");
     console.log(event);
 
+    // login to the SNOO service
     var token = await snoo.login(process.env.SNOO_EMAIL_ADDRESS, process.env.SNOO_PASSWORD);
 
     var syncInterval = moment.duration(1, "hours");
 
+    // fetch sleep sessions from SNOO
     var sleeps = await getSleeps(token, syncInterval);
 
     console.log("Found " + sleeps.length + " completed sleeps since last synchronization.");
 
     if (sleeps.length > 0) {
+        // login to the Baby Tracker service
         await babyTracker.login(process.env.BABYTRACKER_EMAIL_ADDRESS, process.env.BABYTRACKER_PASSWORD, process.env.BABYTRACKER_DEVICE_UUID);
 
         for (var i = 0; i < sleeps.length; i++) {
             var sleep = sleeps[i];
 
+            // post a new sleep record to Baby Tracker
             await babyTracker.createSleep(sleep.startTime, (sleep.duration / 60), "Logged from SNOO.");
         }
     }
