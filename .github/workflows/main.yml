@@ -21,7 +21,7 @@ jobs:
         run: npm install
         
       - name: Create .zip file
-        run: zip -r deploy.zip . -x .git/*
+        run: zip -r deploy.zip . -x "*.git"
 
       - name: Deploy to AWS Lambda
         uses: appleboy/lambda-action@master
