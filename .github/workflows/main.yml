@@ -1,0 +1,33 @@
+name: deploy-to-aws-lambda
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Create .zip file
+        run: zip -r deploy.zip .
+
+      - name: Deploy to AWS Lambda
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: babytracker-snoo-sync
+          zip_file: deploy.zip
