@@ -18,13 +18,13 @@ jobs:
           node-version: 16
           
       - name: Install dependencies
-        run: npm install
+      - run: npm install
         
       - name: Create .zip file
-        run: zip -r deploy.zip .
+      - run: zip -r deploy.zip .
 
       - name: Deploy to AWS Lambda
-        uses: appleboy/lambda-action@master
+      - uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
