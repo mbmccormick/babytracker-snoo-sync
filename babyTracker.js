@@ -178,61 +178,6 @@ async function getLastSyncId() {
     }
 }
 
-exports.getTransactions = async function (maximum) {
-    console.log("Fetching transactions from Baby Tracker service.");
-
-    if (maximum == undefined) {
-        maximum = 1;
-    }
-
-    var lastSyncId = await getLastSyncId();
-
-    var start = lastSyncId - maximum;
-
-    if (start < 0) {
-        start = 0;
-    }
-
-    return new Promise((resolve, reject) => {
-        request({
-            method: "GET",
-            url: "https://prodapp.babytrackers.com/account/transaction/" + DeviceUUID + "/" + start,
-            jar: true
-        },
-            function (err, response, body) {
-                if (err || response.statusCode >= 400) {
-                    console.error("Status Code = " + response.statusCode);
-
-                    if (err) {
-                        console.error(err);
-                    }
-
-                    if (body) {
-                        console.error(body);
-                    }
-
-                    reject(err);
-                    return;
-                }
-
-                var data = JSON.parse(body);
-
-                var transactions = [];
-
-                for (var i = 0; i < data.length; i++) {
-                    var transaction = Buffer.from(data[0].Transaction, "base64").toString("ascii");
-                    transaction = JSON.parse(transaction);
-
-                    transactions.push(transaction);
-                }
-
-                console.log("Fetch transactions succeeded.");
-
-                resolve(transactions);
-            });
-    });
-};
-
 async function createDiaper(type, note) {
     console.log("Posting diaper record to Baby Tracker service.");
 
