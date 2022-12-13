@@ -75,7 +75,7 @@ exports.handler = async function (event, context, callback) {
     // fetch sleep sessions from SNOO
     var sleeps = await getSleeps(token, syncInterval);
 
-    console.log("Found " + sleeps.length + " completed sleeps since last synchronization.");
+    console.log("Found " + sleeps.length + " completed sleep sessions since last synchronization.");
 
     if (sleeps.length > 0) {
         // login to the Baby Tracker service
