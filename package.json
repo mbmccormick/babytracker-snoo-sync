@@ -11,6 +11,7 @@
     "request": "^2.88.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.39",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "jsonata": "^1.8.6"
   }
 }

@@ -2,47 +2,34 @@ const snoo = require("./snoo.js");
 const babyTracker = require("./babyTracker.js");
 
 const moment = require("moment-timezone");
+const jsonata = require("jsonata");
 
 moment.tz.setDefault(process.env.TIME_ZONE);
 
 function combineSleepSessions(data) {
-    var sleeps = [];
-
-    for (var i = 0; i < data.length; i++) {
-        var session = data[i];
-
-        var exists = false;
-
-        for (var j = 0; j < sleeps.length; j++) {
-            var sleep = sleeps[j];
-
-            if (sleep.sessionId == session.sessionId) {
-                exists = true;
-                break;
+    var expression = jsonata(
+       `({
+            \`sessionId\`: {
+                "startTime": (startTime)[0],
+                "isActive": $boolean($max($map(isActive, $number))),
+                "durations": {
+                    "total": $sum(stateDuration),
+                    \`type\`: $sum(stateDuration)
+                }
             }
+        }).$map($keys(), function($v, $i, $a) {
+        {
+            "sessionId": $v,
+            "startTime": $.*[$i].startTime,
+            "isActive": $.*[$i].isActive,
+            "durations": $.*[$i].durations
         }
+        })[]`
+    );
+    
+    var result = expression.evaluate(data);
 
-        if (exists) {
-            if (session.isActive) {
-                sleeps[j].duration = 0;
-            } else {
-                sleeps[j].duration += session.stateDuration;
-            }
-
-            if (session.startTime < sleeps[j].startTime) {
-                sleeps[j].startTime = session.startTime;
-            }
-        }
-        else {
-            sleeps[j] = {
-                sessionId: session.sessionId,
-                startTime: session.startTime,
-                duration: (session.isActive ? 0 : session.stateDuration)
-            };
-        }
-    }
-
-    return sleeps;
+    return result;
 }
 
 async function getSleeps(token, syncInterval) {
@@ -60,12 +47,12 @@ async function getSleeps(token, syncInterval) {
         var sleep = data[i];
 
         // ignore active sleep sessions, these will be synced later
-        if (sleep.duration == 0) {
+        if (sleep.isActive) {
             continue;
         }
         
         // compute the sleep session end time, based on start time and duration
-        var sleepEndTime = moment(sleep.startTime).add(sleep.duration, "seconds");
+        var sleepEndTime = moment(sleep.startTime).add(sleep.durations.total, "seconds");
 
         // if the sleep session ended during this last last sync interval, add it to the result
         if (sleepEndTime >= (syncTime - syncInterval)) {
@@ -97,8 +84,12 @@ exports.handler = async function (event, context, callback) {
         for (var i = 0; i < sleeps.length; i++) {
             var sleep = sleeps[i];
 
+            var note = "Logged from SNOO.";
+            if (sleep.durations.soothing > 0)
+                note += " Soothed for " + moment.duration(sleep.durations.soothing, "seconds").humanize() + ".";
+
             // post a new sleep record to Baby Tracker
-            await babyTracker.createSleep(sleep.startTime, (sleep.duration / 60), "Logged from SNOO.");
+            await babyTracker.createSleep(sleep.startTime, (sleep.durations.total / 60), note);
         }
     }
 
