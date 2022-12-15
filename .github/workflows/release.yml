@@ -1,0 +1,30 @@
+name: build-and-release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Create .zip file
+        run: zip -r deploy.zip . -x ".git/" "package-lock.json"
+
+      - name: Upload to release
+        uses: skx/github-action-publish-binaries@release-2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: 'deploy.zip'
