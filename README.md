@@ -5,7 +5,9 @@ This is an [AWS Lambda](https://aws.amazon.com/lambda/) function written in Node
 
 ## Deployment
 
-Upload the code for the AWS Lambda Function by following the instructions here: https://docs.aws.amazon.com/lambda/latest/dg/programming-model.html
+Download the latest `deploy.zip` file from the [Releases](https://github.com/mbmccormick/babytracker-snoo-sync/releases) page.
+
+Create a new AWS Lambda Function by following the instructions here: https://docs.aws.amazon.com/lambda/latest/dg/programming-model.html and then upload the `deploy.zip` file that you downloaded.
 
 Configure your AWS Lambda Function to use the Node.js 16.x runtime and allow for one minute timeout.
 
